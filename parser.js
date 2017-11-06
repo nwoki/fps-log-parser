@@ -34,6 +34,13 @@ module.exports = {
             action.guid = actionSplit[1];
             action.id = actionSplit[2];
             action.name = actionSplit[3];
+        } else if (actionSplit[0] == 'K') {
+            // 598:46 K;929642;5;;Tegamen;705473;4;;Sbiego;m1garand_mp;135;MOD_HEAD_SHOT;head
+            action.victimGuid = actionSplit[1];
+            action.victimName = actionSplit[4];
+            action.killerGuid = actionSplit[5];
+            action.killerName = actionSplit[8];
+            action.headShot = actionSplit[11] == "MOD_HEAD_SHOT" ? true: false;
         }
 
         return action;
