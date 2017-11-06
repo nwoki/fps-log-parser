@@ -22,17 +22,20 @@
 module.exports = {
     parse: function(data) {
         var split = data.split(" ");
-        
+
         // first part is the server time. Second part is where we have all our information
         var actionSplit = split[1].split(";");
         console.log(actionSplit);
-        
+
         var action = {};
         action.type = actionSplit[0];
-        action.guid = actionSplit[1];
-        action.id = actionSplit[2];
-        action.name = actionSplit[3];
-        
+
+        if (actionSplit[0] == 'J') {
+            action.guid = actionSplit[1];
+            action.id = actionSplit[2];
+            action.name = actionSplit[3];
+        }
+
         return action;
     }
 }
