@@ -1,18 +1,20 @@
 Tail = require('tail').Tail;
-var parser = require("./parser.js");
-var redis = require("redis");
+const parser = require("./parser.js");
+// var redis = require("redis");
+const dgram = require("dgram");
+var udpSocket = dgram.createSocket("udp4");
 
 
 
-// REDIS
-//------
+// // REDIS
+// //------
 
-// setup redis connection
-var client = redis.createClient();
-
-client.on('connect', function() {
-    console.log('Connected to Redis');
-});
+// // setup redis connection
+// var client = redis.createClient();
+//
+// client.on('connect', function() {
+//     console.log('Connected to Redis');
+// });
 
 
 
@@ -22,8 +24,8 @@ function clientJoined(action) {
 
     // only valid guids are saved/worth saving
     if (action.guid > 0) {
-        // save guid and name to redis
-        client.set(action.guid, action.name);
+//         // save guid and name to redis
+//         client.set(action.guid, action.name);
 
 //         client.keys('*', function (err, keys) {
 //             if (err) {
@@ -35,21 +37,40 @@ function clientJoined(action) {
 //             }
 //         });
 
-        // notify the collector
-        // TODO prepare json message and send via TCP socket
+        // notify the collector (wrap the message in "data")
+        var data = {};
+        data["data"] = action;
+
+        // TODO port and server from env file
+        udpSocket.send(JSON.stringify(data), 6666, "localhost", (err) => {
+            if (err) {
+                console.log("ERROR: " + err);
+            }
+        });
     }
 };
 
 function clientKill(action) {
     console.log(action.killerName + " killed -> " + action.victimName);
 
-    if (action.headShot) {
+    if (action.bodyPart == "head") {
         console.log("H-H-H-HEADSHOT!");
     }
 
     // don't send data if invalid
     if (action.killerGuid != 0) {
         // TODO send to collector
+        // we need to wrap the message in a "data" object
+        var data = {};
+        data["data"] = action;
+        console.log("STRINGED -> " + JSON.stringify(data));
+
+        // send to the collector
+        udpSocket.send(JSON.stringify(data), 6666, "localhost", (err) => {
+            if (err) {
+                console.log("ERROR: " + err);
+            }
+        });
     }
 };
 
