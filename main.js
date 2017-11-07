@@ -1,3 +1,4 @@
+require('dotenv').config()
 Tail = require('tail').Tail;
 const parser = require("./parser.js");
 // var redis = require("redis");
@@ -53,20 +54,15 @@ function clientJoined(action) {
 function clientKill(action) {
     console.log(action.killerName + " killed -> " + action.victimName);
 
-    if (action.bodyPart == "head") {
-        console.log("H-H-H-HEADSHOT!");
-    }
-
     // don't send data if invalid
     if (action.killerGuid != 0) {
-        // TODO send to collector
         // we need to wrap the message in a "data" object
         var data = {};
         data["data"] = action;
         console.log("STRINGED -> " + JSON.stringify(data));
 
         // send to the collector
-        udpSocket.send(JSON.stringify(data), 6666, "localhost", (err) => {
+        udpSocket.send(JSON.stringify(data), process.env.COLLECTOR_PORT, process.env.COLLECTOR_ADDRESS, (err) => {
             if (err) {
                 console.log("ERROR: " + err);
             }
@@ -98,9 +94,7 @@ function parseNewContent(data) {
 
 
 
-
-// TODO pass log file via env
-var tail = new Tail("game.log");
+var tail = new Tail(process.env.LOG_FILE);
 
 /** for the startup we go straight to the end of the file and read new data */
 tail.on("line", (data) => {
