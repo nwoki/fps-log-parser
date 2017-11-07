@@ -18,3 +18,5 @@ COLLECTOR_PORT=
 COLLECTOR_ADDRESS=
 LOG_FILE=
 ```
+
+> **NOTE:** you log file for the game MUST reside in the application root folder. For some reason the `tail` module can't access files that are present in parent directories. Just softling the log file to the project root and you're done

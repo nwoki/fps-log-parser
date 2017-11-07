@@ -1,6 +1,7 @@
 module.exports = {
     parse: function(data) {
-        var split = data.split(" ");
+        // log file adds some extra whitespace we don't need
+        var split = data.trim().split(" ");
 
         // first part is the server time. Second part is where we have all our information
         var actionSplit = split[1].split(";");
