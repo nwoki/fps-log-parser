@@ -43,7 +43,7 @@ function clientJoined(action) {
         data["data"] = action;
 
         // TODO port and server from env file
-        udpSocket.send(JSON.stringify(data), 6666, "localhost", (err) => {
+        udpSocket.send(JSON.stringify(data), process.env.COLLECTOR_PORT, process.env.COLLECTOR_ADDRESS, (err) => {
             if (err) {
                 console.log("ERROR: " + err);
             }
