@@ -24,7 +24,7 @@ function clientJoined(action) {
     console.log("Client " + action.name + " with id " + action.id + " just joined");
 
     // only valid guids are saved/worth saving
-    if (action.guid > 0) {
+//     if (action.guid > 0) {
 //         // save guid and name to redis
 //         client.set(action.guid, action.name);
 
@@ -38,17 +38,21 @@ function clientJoined(action) {
 //             }
 //         });
 
-        // notify the collector (wrap the message in "data")
-        var data = {};
-        data["data"] = action;
+    /*
+     * any guid is valid. For this first part we just collect the info from the aliases. The second version
+     * will include the association of a firebase authenticated account to a set of aliases in order to
+     * determine the player
+     */
 
-        // TODO port and server from env file
-        udpSocket.send(JSON.stringify(data), process.env.COLLECTOR_PORT, process.env.COLLECTOR_ADDRESS, (err) => {
-            if (err) {
-                console.log("ERROR: " + err);
-            }
-        });
-    }
+    // notify the collector (wrap the message in "data")
+    var data = {};
+    data["data"] = action;
+
+    udpSocket.send(JSON.stringify(data), process.env.COLLECTOR_PORT, process.env.COLLECTOR_ADDRESS, (err) => {
+        if (err) {
+            console.log("ERROR: " + err);
+        }
+    });
 };
 
 function clientKill(action) {
