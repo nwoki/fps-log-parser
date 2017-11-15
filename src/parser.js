@@ -5,17 +5,15 @@ module.exports = {
 
         // first part is the server time. Second part is where we have all our information
         var actionSplit = split[1].split(";");
-        console.log(actionSplit);
-
         var action = {};
         action.type = actionSplit[0];
 
-        if (actionSplit[0] == 'J') {
+        if (action.type == 'J') {
             // 603:32 J;705473;4;Sbiego
             action.guid = actionSplit[1];
             action.id = actionSplit[2];
             action.name = actionSplit[3];
-        } else if (actionSplit[0] == 'K') {
+        } else if (action.type == 'K') {
             // 598:46 K;929642;5;;Tegamen;705473;4;;Sbiego;m1garand_mp;135;MOD_HEAD_SHOT;head
             action.victim_guid = actionSplit[1];
             action.victim_name = actionSplit[4];
