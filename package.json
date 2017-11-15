@@ -1,11 +1,11 @@
 {
-  "name": "cod2-rcon",
+  "name": "fps-log-parser",
   "version": "1.0.0",
-  "description": "Simple rcon tool for managing cod2 games",
+  "description": "Simple rcon tool for managing fps games (cod2 for now)",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main.js"
+    "start": "node src/main.js"
   },
   "author": "Francesco Nwokeka <francesco.nwokeka@gmail.com>",
   "license": "GPLv3",
