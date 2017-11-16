@@ -1,6 +1,6 @@
-# COD2 Rcon
+# COD2 log parser
 
-A simple rcon tool made in nodejs to try out this framework.
+A simple CallOfDuty tool made in nodejs to try out this framework. It parses the log file and reports to the `collector` the stats extracted.
 
 
 
@@ -9,15 +9,11 @@ A simple rcon tool made in nodejs to try out this framework.
 In order to get your stats registered you need to register to the stats server. (This part is left up to the developer). Execute the following steps in order to login:
 
 * register an account on your [fps-stats-viewer](<link here>) website
-* go to your `fps-stats-viewer` website and login
-* request a `login pin`. Write it down somewhere or memorize it
-* enter the server with one of your registered nicks and digit `!login <pin>` in the global chat. Now your player should be authenticated to the log parser and all stats gathered will be sent to the [fps-collector](<link here>) server.
-* to logout (a.k.a stop stats collection) simply type `!logout`.
+* go to your `fps-stats-viewer` website and login. Here you'll be able to associate a series of nicks to your user account.
+* go and play on your server!
 
-> **NOTE:** if you logout from the current match and come back in, you'll have to repeat the procedure in order to get your stats registered again
 
 # TODO
-* success/fail login message (rcon) for user to be notified
 
 
 ## Setup
@@ -38,16 +34,10 @@ LOG_FILE=
 The application basically parses the COD2 (for now) server log file. It looks for:
 
 * Joins
-* Kills
-* Deaths
+* Kills and Deaths
 
 * **JOIN**
-When a player joins the server, he is added to the redis database as the following KEY:VALUE (<nick>:null). The key is the nick the player is curren
-
-game_id:[game_nick, auth_id]
+When a player joins the server, he is reported to the stats collector service and added to the database if missing.
 
 * **KILL & DEATH**
-Every kill and death is reported to the collector server *only* if the player has a valid account (see creating an account) and is logged in (see login section).
-
-* **QUIT**
-If the user was logged in, the application marks him as logged out and stops collecting information for that player id.
+Every kill and death is reported to the collector server for stats gathering
